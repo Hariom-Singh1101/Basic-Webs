@@ -1,0 +1,155 @@
+@charset "utf-8";
+.labelcolor
+{
+  font-weight:bold;
+  
+}
+
+
+
+/* .main_container
+{
+	width:97%;
+	margin:0px auto;
+	padding:0px;
+	border:1px solid #0b614b;
+} */
+/* .btn, .btn:hover, .btn:focus, .btn:active
+{
+	background: #009ede;
+	color: #ffffff !important; 
+	font-weight: bold;
+} */
+.btn
+{
+	background: #009ede; color: #ffffff; font-weight: bold;
+} 
+.btn:hover, .btn:focus, .btn:active
+{
+	background: #0db6fa; color: #ffffff; font-weight: bold;
+} 
+.bold
+{
+	font-weight:bold;
+}
+.top-space {
+    margin-top: 5px;
+}
+.padding-top
+{
+	
+	margin-top: 1%;
+}
+
+.labelclass
+{
+	font-weight:normal;
+}
+/* .red
+{
+	color:#ffffff !important;
+} */
+.green
+{
+	color:red !important;
+}
+th
+{
+	background-color: #1E7C9A;
+	color: white;
+	text-align:center !important;
+}
+
+
+table.scroll {
+    border-spacing: 0;
+}
+
+table.scroll tbody,
+ table.scroll thead { display: block; } 
+
+  /*thead tr th { 
+    height: 30px;
+     line-height: 30px; 
+} */
+table.scroll th{
+ height: 30px;
+/*     line-height: 30px; */
+ 
+}
+table.scroll tr{
+/*     line-height: 30px; */
+ 
+}
+table.scroll td{
+    line-height: 30px;
+  
+}
+
+table.scroll tbody {
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;  
+}
+ tbody td:last-child, thead th:last-child {
+    border-right: none;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) {
+    background-color: #e1eef4;
+}
+.table-striped > tbody > tr:nth-child(2n) {
+    background-color: #fff;
+}
+
+.table-hover>tbody>tr:hover{background-color:#f8f8f8}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
+{
+	vertical-align:middle !important;
+}
+
+.bdr10p{
+	width:80%;
+	margin:0.5% 10%;
+	padding:0px;
+	border:1px solid #1682ba;
+}
+
+
+.multi-select {
+    width: 100% !important;
+}
+.tab_head{
+	color:#800000 !important;
+	/* color for headers */
+}
+
+.border
+{
+	border:1px solid rgba(186,186,186,0.5);
+}
+
+
+/* Font colors */
+
+.redcolor
+{
+	font-color:#fe3934;
+}
+.bluecolor
+{
+	font-color:#029ddf;
+}
+.headingtag
+{
+	margin-top:0px !important;
+}
+.nav-pills>li a
+{
+	background-color:#eee;
+	border:1px #fff solid;
+}
+.nav-pills > li + li
+{
+	margin-left:0px !important;
+}

@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to left, black,red,rgb(184, 15, 15),black);
+}
+
+
+
+form {
+    /* background-color: red;
+    visibility: none; */
+    width: 40vh;
+    height: 50vh;
+    padding: 5px;
+    border: 2px solid blue;
+    border-radius: 5px;
+}
+
+.firstcontainer {
+    display: flex;
+}
+
+.first input {
+    width: 95%;
+    height: 40px;
+    margin: 3px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+
+.last input {
+    width: 95%;
+    height: 40px;
+    margin: 3px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.secondcontainer input {
+    width: 95%;
+    height: 40px;
+    margin: 3px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.thirdcontainer input {
+    width: 95%;
+    height: 40px;
+    margin: 3px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+.submit input{
+    width: 95%;
+    height: 40px;
+    margin: 3px;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50%;
+    border-radius: 20px;
+
+}
+.submit input:hover{
+    background-color: blue;
+    color: white;
+}

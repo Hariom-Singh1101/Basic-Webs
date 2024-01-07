@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+
+.tablehead
+{
+	/* background-color: #6699CC; */
+	/* background-color: #FF0033; */
+	background-color: #FF6633;
+	/* background-color: #CCCCCC; */
+	/* background-color:#629305; */
+	color:black;
+}
+
+.alternatetd
+{
+	background-color:#ffffff;
+	color:black;
+}
+
+.button{
+    font-weight:bolder;
+    text-align:center;
+}
+
+.lable{
+    color:#0B614B;
+	font-weight:bold;
+	font-size:100%;
+	font-family:Cambria;
+}
+
+.lable1{
+    color:#0B614B;
+	font-weight:bold;
+	font-size:100%;
+	font-family:Cambria;
+}
+
+.lableinDlDet{
+    color:#0B614B;
+	font-weight:normal;
+	font-size:100%;
+	font-family:Cambria;
+}
+
+.label{
+    color:#0B614B; 
+	font-weight:bold; 
+	font-size:90%; 
+	text-align:right;
+	font-family:verdana;
+	float:left;
+}
+
+.headng{
+    color:#03560e; 
+	font-weight: bolder; 
+	font-size:100%; 
+	text-align:left;
+	font-family: verdana;
+}
+.headng1{
+    color:#03560e; 
+	font-weight: bolder; 
+	font-size:100%; 
+	text-align:center;
+	font-family: verdana;
+}
+.table-no-border>tr>, 
+.table-no-border>tr>td {
+  border-top: none; 
+}
+
+/*  .alternatetd:nth-child(even)
+{
+	background-color:#ffffff;
+	color:black;
+}
+.alternatetd:nth-child(odd)
+{
+	background-color:gray;
+	color:black;
+} */

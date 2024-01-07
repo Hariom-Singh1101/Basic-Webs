@@ -1,0 +1,146 @@
+﻿var contextName = "user";var intentName = "";var ChatCount = 0; var startDate; var box = null;var count = 1;
+var SessionID = null; var chatLog = ""; var cdate = ""; var sid = ""; var did = ""; var appname = "rtoChatBot"; 
+var mode="WebChatBot";var df="";var status="";var lvalue="";
+
+$(document).ready(function () {      
+  
+
+  $("#pdfModal").on("shown.bs.modal", function () {
+        
+		var opt = document.getElementById('ifz');
+			opt.src = lvalue;
+			$("#pdfModal").find(".modal-header > h4").text(intentName.replace("_", " ")).end()
+			//alert("URL   :  ",lvalue);
+			$('.A2').click(function () { return false; });
+    });  
+    function CALLInvoke() {
+	 var msg="";	
+	 var strtData = {MSG: msg, Sid: SessionID, IName: intentName, Count: ChatCount, app_name: appname, Mode:mode, dflag:df};
+	 var udata = JSON.stringify(strtData);
+        $.ajax({
+            url: "https://vani.nic.in/ChatBotAPI3.0/CallAPI.ashx", //CallAPI.ashx
+            type: "POST",
+            //contentType: "application/json; charset=utf-8",
+			data: {ChatData:udata},
+            success: function (data) {
+               
+                if (data != "") {
+
+                    if (data.RespMsg=='exception') {
+                        $("#chat_div").chatbox("option", "boxManager").addMsg("Vani", "Oops! Something went wrong. Please try again later.");
+                        $("#log").append("#GetOTPMessage||", cdate, "#", "Vani : Oops! Something went wrong. Please try again later.||<br/>");
+                        $(".ui-chatbox-msg2 span").css({ 'color': '#000000' });
+                        $("#ooo").prop("disabled", true);
+                    }
+                    else {						
+                        $("#chat_div").chatbox("option", "boxManager").addMsg("Vani", data.RespMsg);
+                        $(".ui-chatbox-msg2 span").css({ 'color': '#000000' });
+                    }
+                    SessionID = data.SessionId;
+                    $("#logToSave").append("RespMsg= ", data.RespMsg,"<br/>", "Action =", data.Action, "<br/>", "IntentName =", data.IntentName, "<br/>");                                    
+                }               
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+               // alert("Error  " + errorThrown);
+            }
+        });
+    }
+    
+    $("#chatwith_me").click(function () {
+        //$('#chatwith_me').hide();
+        CALLInvoke();		
+        if (box)
+        {
+         /*below code will hide the chatbox that is active, when first clicked on toggle button*/
+         box.chatbox("option", "boxManager").toggleBox();		 
+        }
+        else
+        {
+        /*if box variable is null then we will create chat-box.*/
+        box = $("#chat_div").chatbox(
+           {
+                /*unique id and Title for the chat box*/
+                id: contextName,
+                user:
+                {
+                    key: "value"
+                },                    
+                title: "",
+                /*messageSend as name suggest,this will called when message sent.                      and for demo we have appended sent message to our log div.*/
+                messageSent: function (id, user, msg)
+                {
+                    /* This function is called when user enter something. */
+                    var regexT = new RegExp("^\\d{4}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([0-9]{8})$");
+                    var filter = /^[0-9]+$/; /* To match only "Numeric Values" before and after characters */
+                    //Check the message enter by user against the given RegEx
+                    var chatReg = /^[a-zA-Z0-9]+[0-9a-zA-Z\\\/\!\(\)\-_\,\.\;\:\@\&\?\'\" )]*$/;
+                    //var chatReg = /^[0-9A-Za-z/\\\\]*$/;
+                    if (chatReg.test(msg)) {
+              
+					 var strtData = {MSG: msg, Sid: SessionID, IName: intentName, Count: ChatCount, app_name: appname, Mode:mode, dflag:df};
+					 var udata = JSON.stringify(strtData);
+                        $("#chat_div").chatbox("option", "boxManager").addMsg(contextName, msg); 
+                        $.ajax({
+                            type: "POST",
+                            url: "https://vani.nic.in/ChatBotAPI3.0/CallAPI.ashx", //CallAPI.ashx                                               
+                            // contentType: "application/json; charset=utf-8",
+                            data: {ChatData:udata},
+                            success: function (data) {                                                                 
+                               
+							    SessionID = data.SessionId;                                  
+                                RespMsg = data.RespMsg;                                  
+                                action = data.Action;                                    
+                                intentName = data.IntentName;
+                                contextName = data.Context; 
+								ChatCount = data.Count;
+								status=data.Status;
+								lvalue=data.Lvalue;
+								
+								//RespMsg=RespMsg.replace(/ *, */g,'<br>');
+							   
+								if(status=="rm-lm")
+								{
+									$("#chat_div").chatbox("option", "boxManager").addMsg("Vani", RespMsg);
+									$("#ooo").prop("disabled", false);
+								}
+								else if(status=="rm-rm"){
+									$("#chat_div").chatbox("option", "boxManager").addMsg("Vani", RespMsg);
+									var interval = null;	
+										interval=setInterval(setMsg,60000);	
+										function setMsg(){ 
+											  clearInterval(interval);
+										$("#chat_div").chatbox("option", "boxManager").addMsg("Vani", "Would you like to ask something else?");	
+										}	
+								}
+								else if(status=="rm-dc"){
+									$("#chat_div").chatbox("option", "boxManager").addMsg("Vani", RespMsg);
+									$("#ooo").prop("disabled", false);
+								}
+								else if(status=="dc"){
+									$("#chat_div").chatbox("option", "boxManager").addMsg("Vani", RespMsg);	
+									$("#ooo").prop("disabled", false);									
+								}
+								else if(status=="rm-lk"){
+									//alert(lvalue);
+									$("#chat_div").chatbox("option", "boxManager").addLink("Vani",RespMsg ,lvalue);
+									
+								}
+								else{
+									$("#chat_div").chatbox("option", "boxManager").addMsg("Vani", RespMsg);
+                               
+								}
+								 $("#logToSave").append("User= ", msg, "<br/>", "RespMsg= ", data.RespMsg, "<br/>", "Action =", data.Action, "<br/>", "IntentName =", data.IntentName, "<br/>");
+                                
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                // alert("Error  " + errorThrown);
+                            }
+                        });
+                          
+                    }
+                }
+           });
+        }
+    });
+
+});

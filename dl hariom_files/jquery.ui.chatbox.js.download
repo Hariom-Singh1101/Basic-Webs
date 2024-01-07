@@ -1,0 +1,442 @@
+/*
+ * Copyright 2010, Wen Pu (dexterpu at gmail dot com)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * Check out http://www.cs.illinois.edu/homes/wenpu1/chatbox.html for document
+ *
+ * Depends on jquery.ui.core, jquery.ui.widiget, jquery.ui.effect
+ *
+ * Also uses some styles for jquery.ui.dialog
+ *
+ */
+
+var chat_flag = false;
+//var chat_toggle_flag = 0;
+// TODO: implement destroy()
+(function ($) {
+    $.widget("ui.chatbox", {
+        options: {
+            id: null, //id for the DOM element
+            title: null, // title of the chatbox
+            user: null, // can be anything associated with this chatbox
+            hidden: false,
+            offset: 10, // relative to right edge of the browser window
+            width: 300, // width of the chatbox
+            messageSent: function (id, user, msg) {
+                // override this
+                this.boxManager.addMsg(user.first_name, msg);
+            },
+            boxClosed: function (id) {
+            }, // called when the close icon is clicked
+            boxManager: {
+                // thanks to the widget factory facility
+                // similar to http://alexsexton.com/?p=51
+                init: function (elem) {
+                    this.elem = elem;
+                    //  For default message
+                    var self = this;
+                    var box = self.elem.uiChatboxLog;
+                    var e = document.createElement('div');
+                    e.className = 'row msg_container base_receive';
+                    box.append(e);
+                    $(e).hide();
+                    var systemMessage = false;                   
+                },
+                addMsg: function (peer, msg, msl) {
+                    var self = this;
+                    var box = self.elem.uiChatboxLog;
+                    var e = document.createElement('div');
+                    box.append(e);
+                    $(e).hide();
+
+                    var systemMessage = false;
+                    var innerDiv = document.createElement('div');
+                    innerDiv.className = 'col-md-10 col-xs-10';
+                    var iinnerDiv = document.createElement('div');
+
+                    var imageDiv = document.createElement('div');
+                    imageDiv.className = 'col-md-2 col-xs-2 avatar';
+
+                    var img = document.createElement("img");
+                    img.className = ' img-responsive ';
+
+                    if (peer == "Vani") {
+                        iinnerDiv.className = 'messages msg_receive color_receive';
+                        img.setAttribute("src", "JSandCSS/images/face.png");
+                    } else {
+                        iinnerDiv.className = 'messages msg_sent color_sent';
+                        img.setAttribute("src", "JSandCSS/images/user3.png");
+                    }
+
+                    var contentPara = document.createElement('p');
+                    contentPara.setAttribute('style','word-wrap:break-word');
+
+                    var mlink = document.createElement('a');
+                    $(mlink).text(msl);
+                    mlink.setAttribute('href', '#');
+                    mlink.setAttribute('class', 'more_link');
+                    mlink.setAttribute('data-toggle', 'modal');
+                    mlink.setAttribute('data-target', '#DSModal');
+                    mlink.setAttribute('style', 'color:blue');
+
+                    function urlify(text) {
+                        var urlRegex = /(https?:\/\/[^\s]+)/g;
+						var url = text.match(urlRegex);
+						if(urlRegex.test(text))
+						{    
+							text=text.replace(urlRegex, '<a href="' + url + '" target="_blank" style="color:blue">' + url + '</a>');
+							text=text.replace(/ *; */g,'<br>');
+							//return text.replace(urlRegex, function (url) {
+								
+								//return '<a href="' + url + '" target="_blank" style="color:blue">' + url + '</a>';
+								
+							//})
+							return text;
+						}
+						else
+						{
+							text=text.replace(/ *; */g,'<br>');
+							return text;
+						}
+                        // or alternatively
+                        // return text.replace(urlRegex, '<a href="$1">$1</a>')
+                    }
+
+                   
+                    var fmsg = urlify(msg);
+					//alert(fmsg);
+					//fmsg=fmsg.replace(/ *, */g,'<br>');
+
+                    var txt = document.createTextNode(fmsg);
+                    if (peer == "Vani") {
+                        e.appendChild(imageDiv);
+                        imageDiv.appendChild(img);
+                        e.appendChild(innerDiv);
+                        innerDiv.appendChild(iinnerDiv);
+                        iinnerDiv.appendChild(contentPara);
+                       /// contentPara.appendChild(txt);
+                        contentPara.innerHTML = fmsg;
+                        contentPara.appendChild(mlink);
+                        $(e).addClass("row msg_container base_receive msg_flag");
+                    } else {
+                        //$(iinnerDiv).css("padding-left", 25);
+                        e.appendChild(innerDiv);
+                        innerDiv.appendChild(iinnerDiv);
+                        iinnerDiv.appendChild(contentPara);
+                        contentPara.appendChild(txt);
+                        e.appendChild(imageDiv);
+                        imageDiv.appendChild(img);
+                        $(e).addClass("row msg_container base_sent msg_flag");
+
+                    }
+                    //e.innerHTML = (e.innerHTML).replace(/\\/g, "</p><p>");
+                    if (msg == "") {
+                       // alert("");
+                    }
+                    $(e).css("maxWidth", $(box).width());
+                    $(e).fadeIn();
+                    self._scrollToBottom();
+                    if (!self.elem.uiChatboxTitlebar.hasClass("ui-state-focus")
+                        && !self.highlightLock) {
+                        self.highlightLock = true;
+                        //self.highlightBox();
+                    }
+                },
+				addLink: function (peer, msg , val) {//, link
+                    var self = this;
+                    var box = self.elem.uiChatboxLog;
+                    var e = document.createElement('div');
+                    box.append(e);
+                    $(e).hide();
+                    var systemMessage = false;
+
+
+                    var innerDiv = document.createElement('div');
+                    innerDiv.className = 'col-md-10 col-xs-10';
+                    var iinnerDiv = document.createElement('div');
+
+                    var imageDiv = document.createElement('div');
+                    imageDiv.className = 'col-md-2 col-xs-2 avatar';
+
+                    var img = document.createElement("img");
+                    img.className = ' img-responsive ';
+
+                    iinnerDiv.className = 'messages msg_receive otp_link color_receive';
+                    img.setAttribute("src", "JSandCSS/images/face.png");
+
+                    var linkPara = document.createElement('p');
+                    var dwllink = document.createElement('a');
+                    $(dwllink).text(msg);
+						dwllink.setAttribute('href', '#');						
+						dwllink.setAttribute('class', 'A2');
+						dwllink.setAttribute('data-toggle', 'modal');
+						dwllink.setAttribute('data-target', '#pdfModal');
+						dwllink.setAttribute('style', 'color:blue');
+						
+					
+					
+                    e.appendChild(imageDiv);
+                    imageDiv.appendChild(img);
+                    e.appendChild(innerDiv);
+                    innerDiv.appendChild(iinnerDiv);
+                    iinnerDiv.appendChild(linkPara);
+                    linkPara.appendChild(dwllink);
+                    $(e).addClass("row msg_container base_receive msg_flag");
+                    systemMessage = true;
+                    if (msg == "") {
+                        alert("");
+                    }
+                    $(e).css("maxWidth", $(box).width());
+                    $(e).fadeIn();
+                    self._scrollToBottom();
+
+                    if (!self.elem.uiChatboxTitlebar.hasClass("ui-state-focus")
+                        && !self.highlightLock) {
+                        self.highlightLock = true;
+                        //self.highlightBox();
+                    }
+                },
+               
+                toggleBox: function () {
+                    //this.elem.uiChatbox.toggle();
+                    // this.elem.uiChatbox.toggle("slide", function () { });
+                    //this.elem.uiChatbox.slideToggle('slow', function () { });
+                    this.elem.uiChatbox.show('size', { origin: ["bottom", "right"] }, 1000);
+                },
+                _scrollToBottom: function () {
+                    var box = this.elem.uiChatboxLog;
+                    box.scrollTop(box.get(0).scrollHeight);
+                }
+            }
+        },
+        toggleContent: function (event) {
+            //this.uiChatboxContent.toggle();
+            this.uiChatboxContent.toggle('slow', function () { });
+            if (this.uiChatboxContent.is(":visible")) {
+                this.uiChatboxInputBox.focus();
+                //chat_toggle_flag = 1;
+            } else {
+                //chat_toggle_flag = 0;
+            }
+        },        
+        widget: function () {
+            return this.uiChatbox
+        },
+        _create: function () {
+            var self = this,
+                options = self.options,
+                title = options.title || "VANI&nbsp;-&nbsp;Virtual Assistant of NIC.", //Vani&nbsp;&nbsp;&nbsp;
+                // chatbox
+                uiChatbox = (self.uiChatbox = $('<div></div>'))
+                    .appendTo(document.body)
+                    .addClass('ui-widget ' +
+                    'ui-corner-top ' +
+                    'ui-chatbox'
+                    )
+                    .attr('outline', 0)
+                    .focusin(function () {
+                        self.uiChatboxTitlebar.addClass('ui-state-focus');
+                    })
+                    .focusout(function () {
+                        self.uiChatboxTitlebar.removeClass('ui-state-focus');
+                    }),
+                // titlebar
+                uiChatboxTitlebar = (self.uiChatboxTitlebar = $('<div style="display:table;"><img src="JSandCSS/images/face.png" type="image/x-icon" style="width:50px;height:30px;vertical-align: middle;display: table-cell;margin-top:-15px;margin-left:-24px;"></div>'))
+                    .addClass('ui-widget-header ' +
+                    'ui-corner-top ' +
+                    'ui-chatbox-titlebar ' +
+                    'ui-dialog-header' // take advantage of dialog header style
+                    )
+                    .click(function (event) {
+                        //self.toggleContent(event);
+                    })
+                    .appendTo(uiChatbox),
+                uiChatboxTitle = (self.uiChatboxTitle = $('<span style="vertical-align: middle;display: table-cell; margin-left:5px; color:#FFF5EE;"></span>'))
+                    .html(title)
+                    .appendTo(uiChatboxTitlebar),
+                uiChatboxTitlebarClose = (self.uiChatboxTitlebarClose = $('<a href="#"></a>'))
+                    .addClass('ui-corner-all ' +
+                    'ui-chatbox-icon '
+                    )
+                    .attr('role', 'button')
+                    .hover(function () { uiChatboxTitlebarClose.addClass('ui-state-hover'); },
+                    function () { uiChatboxTitlebarClose.removeClass('ui-state-hover'); })
+                    .click(function (event) {
+                        //uiChatbox.hide();
+                        // uiChatbox.slideToggle("slide", function () { });
+                        uiChatbox.hide('size', { origin: ["bottom", "right"] }, 1000);
+                        if (uiChatboxTitlebarMinimizeText.hasClass("glyphicon-plus")) {
+                            self.toggleContent(event);
+                            $(".min_max").attr('title', "Click to maximize the chatbox.");
+                            uiChatboxTitlebarMinimizeText.removeClass('glyphicon glyphicon-plus');
+                            uiChatboxTitlebarMinimizeText.addClass('glyphicon glyphicon-minus');
+                        }
+                        $("#chat_div .ui-chatbox-msg1").remove();
+                        $("#chat_div .ui-chatbox-msg2").remove();
+                        $("#chat_div .ui-chatbox-msg3").remove();
+                        $("#log").html("");
+                        $("#logToSave").html("");
+                        $("#userIssueDesp").html("");
+                        $("#chatMe_btn").removeAttr('disabled');
+                        $('#chatwith_me').show();
+                        tflag = "false";
+                        $(".ooo").prop("disabled", false);
+
+                        contextName = "user";intentName = "";ChatCount = 0;count = 1;SessionID = null;chatLog = "";cdate = "";appname = "rtoChatBot";mode="";var df="";
+
+                        $("#ooo").val("");
+                        $(".msg_flag").remove();
+                        $("#log").html("");
+                        $("#logToSave").html("");
+                        $("#userIssueDesp").html("");
+                        $("#chatMe_btn").show();
+                        chat_flag = false;
+
+                        self.options.boxClosed(self.options.id);
+                        return false;
+                    })
+                    .appendTo(uiChatboxTitlebar),
+                uiChatboxTitlebarCloseText = $('<span data-toggle="tooltip" title="Click to start new session"></span>')
+                    .addClass('glyphicon glyphicon-remove')
+                    .appendTo(uiChatboxTitlebarClose),
+                uiChatboxTitlebarMinimize = (self.uiChatboxTitlebarMinimize = $('<a href="#" style="margin-right:10px"></a>'))
+                    .addClass('ui-corner-all ' +
+                    'ui-chatbox-icon'
+                    )
+                    .attr('role', 'button')
+                    .hover(function () { uiChatboxTitlebarMinimize.addClass('ui-state-hover'); },
+                    function () { uiChatboxTitlebarMinimize.removeClass('ui-state-hover'); })
+                    .click(function (event) {
+                        //self.toggleContent(event);
+                        if (uiChatboxTitlebarMinimizeText.hasClass("glyphicon-minus")) {
+                            self.toggleContent(event);
+                            $(".min_max").attr('title', "Click to maximize the chatbox.");
+                            uiChatboxTitlebarMinimizeText.removeClass('glyphicon glyphicon-minus');
+                            uiChatboxTitlebarMinimizeText.addClass('glyphicon glyphicon-plus');
+                        }
+                        else {
+                            self.toggleContent(event);
+                            uiChatboxTitlebarMinimizeText.removeClass('glyphicon glyphicon-plus');
+                            uiChatboxTitlebarMinimizeText.addClass('glyphicon glyphicon-minus');
+                            $(".min_max").attr('title', "Click to minimize the chatbox.");
+                        }
+
+                        return false;
+                    })
+                    .appendTo(uiChatboxTitlebar),
+                uiChatboxTitlebarMinimizeText = $('<span data-toggle="tooltip" title="Click to maximize the chatbox." class="min_max"></span>')
+                    .addClass('glyphicon glyphicon-minus')
+                    .appendTo(uiChatboxTitlebarMinimize),
+                // content
+                uiChatboxContent = (self.uiChatboxContent = $('<div></div>'))
+                    .addClass('ui-widget-content ' +
+                    'ui-chatbox-content '
+                    )
+                    .appendTo(uiChatbox),
+                uiChatboxLog = (self.uiChatboxLog = self.element)
+                    .addClass('panel-body ' + ' msg_container_base ' + 'ui-widget-content ' +
+                    'ui-chatbox-log'
+                    )
+                    .appendTo(uiChatboxContent),
+                uiChatboxInput = (self.uiChatboxInput = $('<div></div>'))
+                    .addClass('ui-widget-content ' +
+                    'ui-chatbox-input'
+                    )
+                    .click(function (event) {
+                        // anything?
+                    })
+                    .appendTo(uiChatboxContent),
+
+                uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea id="ooo" class="ooo" maxlength="250"></textarea>'))
+                    .addClass('ui-widget-content ' +
+                    'ui-chatbox-input-box ' +
+                    'ui-corner-all'
+                    )
+                    .appendTo(uiChatboxInput)
+
+                    .keydown(function (event) {
+                        if (event.keyCode && event.keyCode == $.ui.keyCode.ENTER) {
+                            msg = $.trim($(this).val());
+                            if (msg.length > 0) {
+                                self.options.messageSent(self.options.id, self.options.user, msg);
+                            }
+                            $(this).val('');
+                            return false;
+                        }
+                    })
+                    .focusin(function () {
+                        uiChatboxInputBox.addClass('ui-chatbox-input-focus');
+                        var box = $(this).parent().prev();
+                        box.scrollTop(box.get(0).scrollHeight);
+                    })
+                    .focusout(function () {
+                        uiChatboxInputBox.removeClass('ui-chatbox-input-focus');
+                    });
+            uiChatboxNonValidText = (self.uiChatboxNonValidText = $('<div style="margin-left:5px;">Allowed Characters<span class="tooltiptext"><ul><li>A maximum of 250 characters is allowed at a time for a single message.</li><li><strong>A-Z</strong>, <strong>a- z</strong>, <strong>0-9</strong>, <strong>!</strong> , <strong>?</strong> , <strong>.</strong> , <strong>space</strong> , <strong>-</strong> , <strong>(</strong> , <strong>)</strong> , <strong>@</strong> ,<strong>_</strong> , <strong>\'</strong> , <strong>&quot;</strong> , <strong>;</strong> , <strong>:</strong> <strong>,</strong></li></ul></span></div>')).addClass('tooltip1 ui-nonvalidtext').appendTo(uiChatboxInput),//Characters (A-Z,a- z,0-9,!,?,., ,-,(,),@,_,&#39;,&#34;,;,:,) are allowed only. Only following character are allowed (A-Z,a- z,0-9,!,?,., ,-,(,),@,_,&#39;,&#34;,;,:,).
+                // disable selection
+                uiChatboxTitlebar.find('*').add(uiChatboxTitlebar).disableSelection();
+            uiChatboxInputButton = (self.uiChatboxInputButton = $('<div style="width:20%;float:right; "><input type="button" name="r_desg" id="r_desg" value="Send" class="btn btn-primary" style="font-size:smaller;float:right; margin-right:5px;"/></div>'))
+                .click(function (event) {
+
+                    msg = $.trim($("#ooo").val());
+                    if (msg.length > 0) {
+                        self.options.messageSent(self.options.id, self.options.user, msg);
+                    }
+                    $("#ooo").val('');
+                    return false;
+                })
+                .appendTo(uiChatboxInput),
+                // disable selection
+                uiChatboxTitlebar.find('*').add(uiChatboxTitlebar).disableSelection();
+
+            // switch focus to input box when whatever clicked
+            uiChatboxContent.children().click(function () {
+                // click on any children, set focus on input box
+                self.uiChatboxInputBox.focus();
+            });
+
+            self._setWidth(self.options.width);
+            self._position(self.options.offset);
+
+            self.options.boxManager.init(self);
+
+            if (!self.options.hidden) {
+                //uiChatbox.show();
+                uiChatbox.hide();
+            }
+            //uiChatbox.slideToggle('slow', function () { });
+            uiChatbox.show('size', { origin: ["bottom", "right"] }, 1000);
+        },
+        _setOption: function (option, value) {
+            if (value != null) {
+                switch (option) {
+                    case "hidden":
+                        if (value)
+                            this.uiChatbox.hide();
+                        else
+                            this.uiChatbox.show();
+                        break;
+                    case "offset":
+                        this._position(value);
+                        break;
+                    case "width":
+                        this._setWidth(value);
+                        break;
+                }
+            }
+            $.Widget.prototype._setOption.apply(this, arguments);
+        },
+        _setWidth: function (width) {
+            this.uiChatboxTitlebar.width(width + "px");
+            this.uiChatboxLog.width(width + "px");
+            this.uiChatboxInput.css("maxWidth", 308 + "px");
+            // padding:2, boarder:2, margin:5
+            this.uiChatboxInputBox.css("width", (308 - 12) + "px");
+        },
+        _position: function (offset) {
+            this.uiChatbox.css("right", offset);
+            //this.uiChatboxInput.css("left", "+=1");
+        }
+    });
+}(jQuery));

@@ -1,0 +1,25 @@
+var xmlhttp = null;
+function createRequest() {
+	if (window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+}
+
+function MessageHandler(errorcode)
+              {
+			  createRequest();
+			  xmlhttp.onreadystatechange = function() {
+						if ((xmlhttp.readyState == 4) && (xmlhttp.status == 200)) 
+							{	
+					 			var responseTextVar = xmlhttp.responseText;						
+					 			var respArray=responseTextVar.split(",");
+			        		    document.getElementById("s4msg").value = respArray[3];
+                			}
+			 };
+					xmlhttp.open("POST", "jsp/ajaxcallreceiver.jsp",false);
+		    		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					xmlhttp.send("ecode=" +errorcode);
+              }
+  

@@ -1,0 +1,7 @@
+#prntbtn:hover{
+    background-color:black ;
+    color: white;
+}
+#prntbtn{
+    border-radius: 10px;
+}

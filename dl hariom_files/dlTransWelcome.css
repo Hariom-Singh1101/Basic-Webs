@@ -1,0 +1,206 @@
+@CHARSET "UTF-8";
+
+.fieldsetWelcome
+{
+	border-radius: 20px;
+	border-color: gray; 
+	width: 66%; 
+	margin: 0 auto; 
+	background-color: antiquewhite;
+}
+
+.marginStyle
+{
+	margin: 0 auto;
+}
+
+.fieldsetRenewal
+{
+	border-radius: 20px;
+	border-color: gray; 
+	/* width: auto; */
+	/* width: auto;
+	border-radius: 20px; */
+	/** 97% width */ 
+	margin: 0 auto;
+	text-align: left; 
+	background-color: antiquewhite;
+}
+
+
+.underline
+{
+	text-decoration: underline;
+}
+
+.w200
+{
+	width: 200px;
+}
+
+.w205
+{
+	width: 205px;
+}
+
+.w265
+{
+	width: 265px;
+}
+
+.w260
+{
+	width: 260px;
+}
+
+.msgColor
+{
+	color: #0B614B;
+}
+
+.upperCase
+{
+	text-transform: uppercase;
+}
+
+.redLabl
+{
+	color: red;
+}
+
+.blueColor
+{
+	color: blue;
+}
+
+.maroonColor
+{
+	color: maroon;
+}
+
+.redColor
+{
+	color: red;
+}
+
+.greenColor
+{
+	color: green;
+}
+
+.legendStyle
+{
+	color: maroon; 
+	size: 5; 
+	font-weight: bold;
+}
+
+.org.apache.poi.ss.usermodel.BorderStyle
+{
+	border: 1px solid black;
+}
+
+.lablStyle
+{
+	text-decoration: underline; 
+	font-weight: bolder; 
+	color: #0B614B;
+}
+
+.tleftStyl
+{
+	visibility: hidden;
+	display: none;
+}
+
+.trightStyl
+{
+	visibility: hidden;
+	display: none;
+}
+
+.tabStyle
+{
+	visibility: hidden; 
+	display: none; 
+	width: 100%; 
+	height: auto;
+}
+
+.tdStyl
+{
+	background: white;
+}
+
+.divBorder
+{
+	border-style:solid;
+}
+
+.ackStyle
+{
+	font-size:15; 
+	font-weight: bolder;
+	text-decoration: underline;
+}
+
+.notVisible
+{
+	display: none;
+}
+
+.visibleDiv
+{
+	display: block;
+}
+
+.dateEnroll
+{
+	
+}
+.dateCert
+{
+	
+}
+
+h4
+{
+	margin-bottom:0px !important;
+}
+/* fieldset{
+	width: auto;
+    border: 3px groove !important;
+    border: 1px solid #1D1D1D !important;
+    padding: 0 1em 1em !important;
+    margin: 0 0 0 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+    display: table-cell;
+}
+
+@media (min-width: 992px)
+{
+	.alignment
+	{
+		text-align: left !important;
+	}
+}
+
+@media(max-width: 768px)
+{
+	.alignment
+	{
+		text-align: center !important;
+	}
+}
+
+@media (max-width:992px)
+{
+	.labeled
+	{
+		text-align: center !important;
+	}
+} */
+
+.top10px{top:10px; }
+.errorMessage li{list-style: none !important;}
